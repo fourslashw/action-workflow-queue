@@ -24,4 +24,4 @@ inputs:
 
 runs:
   using: docker
-  image: docker://ghcr.io/ahmadnassri/action-workflow-queue:1.2.0
+  image: docker://docker.io/fourslashw/action-workflow-queue:v1
