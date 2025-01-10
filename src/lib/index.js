@@ -25,6 +25,7 @@ export default async function ({ token, delay, timeout, extra_workflow_ids }) {
     .map(id => parseInt(id, 10))
     .filter(val => !!val);
   const all_workflow_ids = extra_workflow_ids_parsed.concat(workflow_id);
+  core.info('no active run of this workflow found')
 
   // get workflow id and created date from run id
   const { data: { workflow_id, run_started_at } } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}', {
@@ -36,7 +37,7 @@ export default async function ({ token, delay, timeout, extra_workflow_ids }) {
   // date to check against
   const before = new Date(run_started_at)
 
-  core.info(`searching for workflow runs before ${before}`)
+  core.info(`searching for workflow [${all_workflow_ids}] runs before ${before}`)
 
   // get previous runs for this run workflow id and any extra workflow ids passed from params
   const waiting_for_arrays = await Promise.all(all_workflow_ids.map(async wf_id => runs({ octokit, run_id, workflow_id: wf_id, before })))
