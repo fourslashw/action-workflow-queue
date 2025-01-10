@@ -10,6 +10,7 @@ import runs from './runs.js'
 // sleep function
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
+
 export default async function ({ token, delay, timeout, extra_workflow_ids }) {
   let timer = 0
 
@@ -19,8 +20,6 @@ export default async function ({ token, delay, timeout, extra_workflow_ids }) {
   // extract runId
   const { runId: run_id } = github.context
 
-
-
   // get workflow id and created date from run id
   const { data: { workflow_id, run_started_at } } = await octokit.request('GET /repos/{owner}/{repo}/actions/runs/{run_id}', {
     ...github.context.repo,
@@ -28,20 +27,18 @@ export default async function ({ token, delay, timeout, extra_workflow_ids }) {
   })
 
   // Collect all workflow ids to wait by combining passed in input values with current workflow id
-  const extra_workflow_ids_parsed = (extra_workflow_ids||"")
+  const other_workflow_ids = (extra_workflow_ids||"")
     .split(',')
     .map(id => parseInt(id, 10))
     .filter(val => !!val);
-  const all_workflow_ids = extra_workflow_ids_parsed.concat(workflow_id);
 
   // date to check against
   const before = new Date(run_started_at)
 
-  core.info(`searching for workflows [${all_workflow_ids}] runs before ${before}`)
+  core.info(`searching for workflows runs before ${before}`)
 
   // get previous runs for this run workflow id and any extra workflow ids passed from params
-  const waiting_for_arrays = await Promise.all(all_workflow_ids.map(async wf_id => runs({ octokit, run_id, workflow_id: wf_id, before })))
-  let waiting_for = waiting_for_arrays.flat(1);
+  let waiting_for = await runs({ octokit, run_id, workflow_id, before, other_workflow_ids })
 
 
   if (waiting_for.length === 0) {
@@ -68,7 +65,7 @@ export default async function ({ token, delay, timeout, extra_workflow_ids }) {
     await sleep(delay)
 
     // get the data again
-    waiting_for = await runs({ octokit, run_id, workflow_id, before })
+    waiting_for = await runs({ octokit, run_id, workflow_id, before, other_workflow_ids })
   }
 
   core.info('all runs in the queue completed!')
