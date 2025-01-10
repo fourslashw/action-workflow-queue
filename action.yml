@@ -18,6 +18,10 @@ inputs:
     description: delay between status checks (in milliseconds)
     default: "10000"
 
+  wait-other-workflows:
+    description: list of other workflow filenames separated by ","  to wait for
+    default: ""
+
 runs:
   using: docker
   image: docker://ghcr.io/ahmadnassri/action-workflow-queue:1.2.0
