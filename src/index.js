@@ -11,7 +11,8 @@ import main from './lib/index.js'
 const inputs = {
   token: core.getInput('github-token', { required: true }),
   delay: Number(core.getInput('delay', { required: true })),
-  timeout: Number(core.getInput('timeout', { required: true }))
+  timeout: Number(core.getInput('timeout', { required: true })),
+  extra_workflow_ids: core.getInput('wait-other-workflows', { required: true })
 }
 
 // error handler

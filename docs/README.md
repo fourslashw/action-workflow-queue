@@ -32,4 +32,4 @@ jobs:
 | `github-token` | ❌        | `github.token` | The GitHub token used to call the GitHub API    |
 | `timeout`      | ❌        | `600000`       | timeout before we stop trying (in milliseconds) |
 | `delay`        | ❌        | `10000`        | delay between status checks (in milliseconds)   |
-| `wait-other-workflows`        | ❌        |         | list of other workflow filenames separated by ","  to wait for  |
+| `wait-other-workflows`        | ❌        |         | list of other workflow ids separated by ","  to wait for  |
