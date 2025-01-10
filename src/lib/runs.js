@@ -13,7 +13,7 @@ export default async function ({ octokit, workflow_id, run_id, before, other_wor
 
   // get current run of this workflow and all other workflows
 
-  const run_arrays = await Promise.all(all_workflow_ids.map(workflow_id => {
+  const run_arrays = await Promise.all(all_workflow_ids.map(async workflow_id => {
     const { data: { workflow_runs } } = await octokit.request('GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs', {
       ...github.context.repo,
       workflow_id
