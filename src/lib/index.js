@@ -32,6 +32,8 @@ export default async function ({ token, delay, timeout, extra_workflow_ids }) {
     .map(id => parseInt(id, 10))
     .filter(val => !!val);
 
+  core.info(`Also waiting for other workflows: ${other_workflow_ids.join(', ') || 'none'}`)
+
   // date to check against
   const before = new Date(run_started_at)
 
