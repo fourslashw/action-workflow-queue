@@ -38,7 +38,7 @@ export default async function ({ octokit, workflow_id, run_id, before, other_wor
   // if we have a situation where this run and multiple others started at the exact same time (probably launched by the same trigger)
   // we should allow the workflow with the highest id to run and make all other wait
   const runs_with_same_start_to_wait = active_runs
-    .filter(run => new Date(run.run_started_at) == before)
+    .filter(run => new Date(run.run_started_at).getTime() == before.getTime())
     .filter(run => run.id < run_id);
 
   waiting_for = waiting_for.concat(runs_with_same_start_to_wait);

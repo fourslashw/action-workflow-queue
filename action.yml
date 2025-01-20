@@ -24,4 +24,4 @@ inputs:
 
 runs:
   using: docker
-  image: docker://docker.io/fourslashw/action-workflow-queue:v5
+  image: docker://docker.io/fourslashw/action-workflow-queue:v6
